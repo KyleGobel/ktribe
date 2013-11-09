@@ -3,7 +3,9 @@
     paths: {
         'ktribe': '../Scripts/ktribe',
         'text': '../Scripts/text',
-        'underscore' : '../Scripts/underscore'
+        'underscore' : '../Scripts/underscore',
+        'view-models': 'view-models',
+        'views': 'views'
     },
     shim : {
         'underscore' : {
