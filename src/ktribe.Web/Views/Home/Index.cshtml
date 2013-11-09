@@ -2,9 +2,15 @@
     ViewBag.Title = "Home Page";
 }
 
-<div>Test Content</div>
+<div data-view='person'>
+    Loading Content
+</div>
 
-<div data-view-model='person' data-view='person'>
+<div data-view-model='person'>
+    Hello there <span data-bind="text: fullName"></span>!
+</div>
+
+<div data-vvm='person'>
 
 </div>
 

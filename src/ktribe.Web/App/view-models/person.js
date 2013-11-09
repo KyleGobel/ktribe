@@ -6,8 +6,13 @@
     var personViewModel = {
         firstName: ko.observable(),
         lastName: ko.observable(),
-        age: ko.observable()
+        age: ko.observable(),
     }
+
+    //add on computed
+    personViewModel.fullName = ko.computed(function () {
+        return personViewModel.firstName() + " " + personViewModel.lastName();
+    })
 
     //create an inital person
     personViewModel.firstName("Kyle");

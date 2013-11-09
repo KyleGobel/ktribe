@@ -25,7 +25,6 @@ define(function (require) {
 
     //RUN YOUR JAVASCRIPT HERE
 
-
     //Scan page and bind everything we can
     viewBinder.bindAll();
 });
