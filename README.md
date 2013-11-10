@@ -1,9 +1,22 @@
 ktribe
 ======
 
-A tribe of JS libraries with the goal and some glue to make it extremely easy to use knockout/require/jquery together for easy MVVM.
+A tribe of JS libraries with the goal to make it extremely easy and clean to bind views and view models
+together.  Not really meant for a SPA, but more like an asp.net website where you just want to bind some javascript 
+view models to some different areas or views.  ktribe makes that easier.
 
-Ideas were mainly taken from Durandal, and some of the code.
+##Dependencies
+The tribe of JS libraries that this works with are:
+
+-  JQuery
+-  Knockout
+-  RequireJs
+-  Underscore
+
+All view models are expected to be AMD (requireJS) modules.
+
+
+Ideas were mainly taken from Durandal, and some of the code :-).
 
 ktribe brings a couple html5 attributes to make binding easier.
 
@@ -53,6 +66,7 @@ and named the same way, except with a .js extension, and should return a javascr
 located in can be configured via the requirejs config file.
 
 ###data-view-model
+-----------------------------
 
 Similar to the ``data-view`` attribute, except this one is a way to indicate what view model you want to be bound to the container
 element
@@ -92,6 +106,8 @@ Typically the ``viewBinder.bindAll()`` would be called in your asp.net layout fi
 so everything gets bound automatically and you don't have to worry about it.
 
 ###data-vvm
+------------------------------
+
 
 This attribute does everything all in one.
 
