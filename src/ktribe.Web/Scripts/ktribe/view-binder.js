@@ -1,4 +1,5 @@
-﻿define(function (require) {
+﻿/* global define: false */
+define(function (require) {
     var $ = require('jquery');
     var ko = require('knockout');
     var _ = require('lodash');
@@ -16,15 +17,15 @@
             ko.applyBindings(viewModel);
             return;
         }
-        if ($selector.length == 0) {
+        if ($selector.length === 0) {
             system.log("applyBindings $selector contains no elements, cannot bind anything");
             return;
         }
         _.each($selector, function (domElement) {
             ko.applyBindings(viewModel, domElement);
         });
-    }
-  
+    };
+
     /**
     * Wrapper function that uses jQuery.Deferred for getting and html
     * document in the views folder.
@@ -39,7 +40,7 @@
         }, function (err) {
             var errorMessage = err.message;
             errorMessage = errorMessage.replace('HTTP status: 404', '');
-            var errorMessage = "View '{0}' maps to location: '{1}' which could not be found".format(viewName, errorMessage);
+            errorMessage = "View '{0}' maps to location: '{1}' which could not be found".format(viewName, errorMessage);
             system.log(errorMessage);
             deferred.reject(errorMessage);
         });
@@ -63,7 +64,7 @@
             $(container).fadeOut(400, function () {
                 $(container).html(htmlContent);
                 $(container).fadeIn(400, function () {
-                    deferred.resolve()
+                    deferred.resolve();
                 });
             });
         });
@@ -85,9 +86,9 @@
             fadeOutInContent(viewHtml, $viewContainers).then(function () {
                 deferred.resolve();
             });
-        })
+        });
         return deferred;
-    }
+    };
 
     /**
     * Wrapper method around requirejs to load a module with a promise
@@ -102,7 +103,7 @@
         }, function (err) {
             var errorMessage = err.message;
             errorMessage = errorMessage.replace('HTTP status: 404', '');
-            var errorMessage = "ViewModel '{0}' maps to location: '{1}' which could not be found".format(viewName, errorMessage);
+            errorMessage = "ViewModel '{0}' maps to location: '{1}' which could not be found".format(name, errorMessage);
             system.log(errorMessage);
             deferred.reject(errorMessage);
         });
@@ -127,13 +128,16 @@
             }
             if (_.isFunction(viewModel)) {
                 //if the view model is a function, new it up
+                system.log("'{0}' is a function, newing it".format(viewModelName));
                 viewModel = new viewModel();
             }
+
+            system.log(viewModel);
             applyBindings(viewModel, $viewModelContainer);
             deferred.resolve();
         });
         return deferred;
-    }
+    };
 
     /**
     * This will handle everything, find all data-view attributes and load them
@@ -160,29 +164,40 @@
         });
         //find all data-view-model attributes in the document
         var $viewModelContainers = $('*[data-view-model]');
+        system.log("Found {0} view model attributes on page".format($viewModelContainers.length));
         //empty array so we don't try to bind same element twice
         var bindedViewModels = [];
         //loops through each element and binds the view models
         _.each($viewModelContainers, function (obj) {
             var viewModelName = $(obj).attr('data-view-model');
             if (!_.contains(bindedViewModels, viewModelName)) {
+                system.log("Binding '{0}' View Models...".format(viewModelName));
                 bindViewModel(viewModelName);
                 bindedViewModels.push(viewModelName);
             }
         });
         var $everythingContainers = $('*[data-vvm]');
+        system.log("Found {0} vvm attributes on page".format($everythingContainers.length));
         var bindedVvms = [];
         _.each($everythingContainers, function (container) {
             var name = $(container).attr('data-vvm');
+            var transition = $(container).attr('data-load-transition');
             if (!_.contains(bindedVvms, name)) {
                 getViewHtml(name).then(function (html) {
-                    $(container).fadeOut(400, function () {
+                    if (transition === "none") {
                         $(container).html(html);
                         getViewModel(name).then(function (viewModel) {
                             applyBindings(viewModel, $(container));
-                            $(container).fadeIn();
                         });
-                    });
+                    } else {
+                        $(container).fadeOut(400, function () {
+                            $(container).html(html);
+                            getViewModel(name).then(function (viewModel) {
+                                applyBindings(viewModel, $(container));
+                                $(container).fadeIn();
+                            });
+                        });
+                    }
                 });
             }
         });
@@ -193,7 +208,7 @@
     * currently only exposing a couple methods
     */
     var viewBinder = {
-        applyBindings : applyBindings,
+        applyBindings: applyBindings,
         bindAll: bindAll
     };
 
@@ -209,7 +224,7 @@
     function showView($container, $view, viewModel) {
         $container.hide();
         $container.html($view);
-        $.each($container, function() {
+        $.each($container, function () {
             ko.applyBindings(viewModel, this);
         });
         $container.fadeIn();

@@ -208,6 +208,7 @@
     <Content Include="Scripts\knockout-3.0.0.js" />
     <Content Include="Scripts\ktribe\system.js" />
     <Content Include="Scripts\ktribe\view-binder.js" />
+    <Content Include="Scripts\ktribe\view-model-locator.js" />
     <Content Include="Scripts\lodash.js" />
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
