@@ -1,7 +1,7 @@
 ﻿define(function (require) {
     var $ = require('jquery');
     var ko = require('knockout');
-    var _ = require('underscore');
+    var _ = require('lodash');
     var system = require('ktribe/system');
 
     /**

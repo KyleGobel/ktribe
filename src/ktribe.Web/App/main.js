@@ -3,15 +3,10 @@
     paths: {
         'ktribe': '../Scripts/ktribe',
         'text': '../Scripts/text',
-        'underscore' : '../Scripts/underscore',
+        'lodash': '../Scripts/lodash',
         'view-models': 'view-models',
         'views': 'views'
     },
-    shim : {
-        'underscore' : {
-            exports : '_'
-        }
-    }
 });
 
 //Define our named modules so we can use them anywhere (they are included globally)

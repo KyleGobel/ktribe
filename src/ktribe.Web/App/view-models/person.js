@@ -1,6 +1,6 @@
 ﻿define(function (require) {
     var $ = require('jquery');
-    var _ = require('underscore');
+    var _ = require('lodash');
     var ko = require('knockout');
 
     var personViewModel = {
