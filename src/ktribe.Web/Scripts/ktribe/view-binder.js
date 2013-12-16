@@ -184,20 +184,7 @@ define(function (require) {
             var transition = $(container).attr('data-load-transition');
             if (!_.contains(bindedVvms, name)) {
                 getViewHtml(name).then(function (html) {
-                    if (transition === "none") {
-                        $(container).html(html);
-                        getViewModel(name).then(function (viewModel) {
-                            applyBindings(viewModel, $(container));
-                        });
-                    } else {
-                        $(container).fadeOut(400, function () {
-                            $(container).html(html);
-                            getViewModel(name).then(function (viewModel) {
-                                applyBindings(viewModel, $(container));
-                                $(container).fadeIn();
-                            });
-                        });
-                    }
+                    showView(container, name, transition, html);
                 });
             }
         });
@@ -221,12 +208,37 @@ define(function (require) {
     * @param {jquery-object} [$view] the jquery view object
     * @param {object} [viewModel] the viewmodel to bind to the view
     */
-    function showView($container, $view, viewModel) {
-        $container.hide();
-        $container.html($view);
-        $.each($container, function () {
-            ko.applyBindings(viewModel, this);
-        });
-        $container.fadeIn();
+    function showView(container, viewName, transition, viewHtml) {
+        if (transition === "none") {
+            $(container).html(viewHtml);
+            getViewModel(viewName).then(function (viewModel) {
+                if (typeof viewModel.loadViewModel === "function") {
+                    viewModel.loadViewModel().then(function () {
+                        applyBindings(viewModel, $(container));
+                        $(container).fadeIn();
+                    });
+                } else {
+                    applyBindings(viewModel, $(container));
+                    $(container).fadeIn();
+                }
+            });
+        } else {
+            $(container).fadeOut(400, function () {
+                $(container).html(viewHtml);
+                getViewModel(viewName).then(function (viewModel) {
+                    if (typeof viewModel.loadViewModel === "function") {
+                        viewModel.loadViewModel().then(function() {
+                            applyBindings(viewModel, $(container));
+                            $(container).fadeIn();
+                        });
+                    } else {
+                        applyBindings(viewModel, $(container));
+                        $(container).fadeIn();                       
+                    }
+                });
+            });
+        }
     }
+
+
 });
