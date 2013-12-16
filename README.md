@@ -156,5 +156,33 @@ will be faded out and the newly bound view/view-model will be faded in it's plac
 
 
 
+ViewModel Options
+-----------------------
+if your view model has to load data and populate the view model, you can add an ``loadViewModel`` function that returns a Jquery Deffered.  This method will be called and your vvm won't be displayed until the deferred is resolved.
+
+
+```js
+
+define(function (require) {
+    var $ = require('jquery');
+
+    var viewModel = {
+        myData: [],
+        loadViewModel: loadViewModel
+    };
+   
+    function loadViewModel() {
+        var deferred = $.Deferred();
+        $.get('/api/getMyData/', function (data) {
+            viewModel.myData = data;
+            deferred.resolve();
+        }
+        return deferred;
+    }
+    
+    return viewModel;
+}
+```
+
 
 
